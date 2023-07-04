@@ -1,0 +1,3 @@
+[submodule "resistor-optimization/3rd-party/generator"]
+	path = resistor-optimization/3rd-party/generator
+	url = https://github.com/lewissbaker/generator.git

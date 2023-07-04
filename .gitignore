@@ -1,0 +1,4 @@
+.vscode/*
+wasm-build/*
+!wasm-build/.gitkeep
+build/*
