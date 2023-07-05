@@ -2,3 +2,7 @@
 wasm-build/*
 !wasm-build/.gitkeep
 build/*
+node_modules
+.output/*
+dist
+.nuxt/*

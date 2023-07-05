@@ -94,7 +94,7 @@ std::pair<std::string, double> ResistanceOptimizer::optimize(
      << " " << res_svg.getHeight()
      << "\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
      << "<rect width=\"" << res_svg.getWidth() << "\" height=\""
-     << res_svg.getHeight() << "\" fill=\"white\" stroke=\"black\"/>"
+     << res_svg.getHeight() << "\" fill=\"white\"/>"
      << res_svg << "</svg>";
 
   return std::make_pair(ss.str(), res_resistance);

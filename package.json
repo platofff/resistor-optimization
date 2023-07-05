@@ -1,0 +1,23 @@
+{
+  "name": "resistor-optimization",
+  "private": true,
+  "scripts": {
+    "wasm-build": "cd wasm-build && emcmake cmake -DCMAKE_BUILD_TYPE=Release .. && emmake make -j",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate && cp -f wasm-build/resistor-optimization/resistor-optimization.wasm .output/public/_nuxt/"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.22.6",
+    "@nuxt/devtools": "latest",
+    "@nuxtjs/eslint-config": "^12.0.0",
+    "@nuxtjs/eslint-module": "^4.1.0",
+    "@types/node": "^18",
+    "eslint": "^8.44.0",
+    "eslint-plugin-nuxt": "^4.0.0",
+    "eslint-plugin-vue": "^9.15.1"
+  },
+  "dependencies": {
+    "copy-webpack-plugin": "^11.0.0",
+    "nuxt": "^3.6.1"
+  }
+}
