@@ -29,7 +29,8 @@ jobs:
     - name: Cache Emscripten
       uses: actions/cache@v3
       with:
-        path: ~/emsdk
+        path: |
+          **/emsdk
         key: ${{ runner.os }}-emsdk-${{ env.emsdk_version }}
         restore-keys: |
           ${{ runner.os }}-emsdk-
