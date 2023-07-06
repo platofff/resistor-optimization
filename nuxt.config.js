@@ -7,7 +7,9 @@ export default defineNuxtConfig({
       config.resolve.symlinks = true
     }
   },
-  head: {
-    title: 'Resistor optimization'
+  app: {
+    head: {
+      title: 'Resistor optimization'
+    }
   }
 })

@@ -37,16 +37,27 @@ jobs:
     - name: Setup CMake
       uses: jwlawson/actions-setup-cmake@v1.13
 
+    - name: Get latest Emscripten version
+      id: emsdk-version
+      run: |
+        echo "::set-output name=version::$(wget -O- -q https://raw.githubusercontent.com/emscripten-core/emscripten/main/emscripten-version.txt)"
+          
+    - name: Cache Emscripten
+      uses: actions/cache@v3
+      with:
+        path: ~/emsdk
+        key: ${{ runner.os }}-emsdk-${{ steps.emsdk-version.outputs.version }}
+        restore-keys: |
+          ${{ runner.os }}-emsdk-
+
     - name: Install Emscripten
       run: |
-        git clone --depth=1 https://github.com/emscripten-core/emsdk.git
-        cd emsdk
-        ./emsdk install latest
-        ./emsdk activate latest
-
-    - name: Install npm dependencies
-      run: |
-        npm install --omit=dev
+        if [ ! -d "emsdk" ]; then
+          git clone --depth=1 https://github.com/emscripten-core/emsdk.git
+          cd emsdk
+          ./emsdk install latest
+          ./emsdk activate latest
+        fi
       
     - name: Build
       run: |

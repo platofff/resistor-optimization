@@ -92,8 +92,8 @@ export default {
 @import url('~/assets/styles/common.css');
 
 #add-button {
-  width: 30.8px;
-  height: 30.8px;
+  max-width: 30.8px;
+  max-height: 30.8px;
   background-color: #28a745;
   color: white;
   border: none;
@@ -107,10 +107,16 @@ export default {
 #list {
   padding-top: 4px;
   padding-bottom: 4px;
-  gap: 4px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  margin-left: -5px;
+  gap: 8px;
+}
+
+#list>* {
+  margin-left: 4px;
+  margin-right: 4px;
 }
 
 #list input {
