@@ -40,7 +40,6 @@ jobs:
         cd emsdk
         ./emsdk install latest
         ./emsdk activate latest
-        source ./emsdk_env.sh
 
     - name: Install npm dependencies
       run: |
@@ -48,6 +47,7 @@ jobs:
       
     - name: Build
       run: |
+        source emsdk/emsdk_env.sh
         npm run wasm-build
         NODE_ENV=production npm run generate
 
