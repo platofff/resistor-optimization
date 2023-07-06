@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="input-container">
     <h2>Target resistance</h2>
-    <input v-model="resistance" type="number" min="0.01" step="0.01">
+    <input v-model="resistance" class="input-field" type="number" min="0.01" step="0.01">
   </div>
 </template>
 
@@ -21,8 +21,13 @@ export default {
   },
   watch: {
     resistance (val) {
+      localStorage.setItem('targetResistance', JSON.stringify(val))
       this.$emit('update:modelValue', parseFloat(val))
     }
   }
 }
 </script>
+
+<style scoped>
+@import url('~/assets/styles/common.css');
+</style>

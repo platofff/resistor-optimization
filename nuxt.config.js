@@ -5,5 +5,8 @@ export default defineNuxtConfig({
     extend (config, ctx) {
       config.resolve.symlinks = true
     }
+  },
+  head: {
+    title: 'Resistor optimization'
   }
 })

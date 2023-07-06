@@ -1,7 +1,13 @@
 <template>
-  <div>
+  <div class="input-container">
     <h2>Max resistors</h2>
-    <input v-model="maxResistors" type="number" min="1" max="5" step="1">
+    <input
+      v-model="maxResistors"
+      class="input-field"
+      type="number"
+      min="1"
+      step="1"
+    >
   </div>
 </template>
 
@@ -21,8 +27,13 @@ export default {
   },
   watch: {
     maxResistors (val) {
+      localStorage.setItem('maxResistors', JSON.stringify(val))
       this.$emit('update:modelValue', parseInt(val))
     }
   }
 }
 </script>
+
+<style scoped>
+@import url('~/assets/styles/common.css');
+</style>
