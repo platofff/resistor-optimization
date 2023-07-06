@@ -1,5 +1,8 @@
 name: CI/CD Pipeline
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [ master ]
@@ -56,4 +59,3 @@ jobs:
       with:
         branch: gh-pages
         folder: .output/public
-        token: ${{ secrets.GH_PAT }}
