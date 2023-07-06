@@ -20,35 +20,34 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
+        
+    - name: Get latest Emscripten version
+      id: emsdk-version
+      run: |
+        echo "emsdk_version=$(wget -O- -q https://raw.githubusercontent.com/emscripten-core/emscripten/main/emscripten-version.txt)" >> $GITHUB_ENV
 
-    - name: Cache Node modules
+    - name: Cache Emscripten
       uses: actions/cache@v3
       with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        path: ~/emsdk
+        key: ${{ runner.os }}-emsdk-${{ env.emsdk_version }}
         restore-keys: |
-          ${{ runner.os }}-node-
+          ${{ runner.os }}-emsdk-
           
     - name: Setup Node.js environment
       uses: actions/setup-node@v3
       with:
         node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install npm dependencies
+      run: |
+        if [ ! -d "node_modules" ]; then
+          npm ci
+        fi
         
     - name: Setup CMake
       uses: jwlawson/actions-setup-cmake@v1.13
-
-    - name: Get latest Emscripten version
-      id: emsdk-version
-      run: |
-        echo "::set-output name=version::$(wget -O- -q https://raw.githubusercontent.com/emscripten-core/emscripten/main/emscripten-version.txt)"
-          
-    - name: Cache Emscripten
-      uses: actions/cache@v3
-      with:
-        path: ~/emsdk
-        key: ${{ runner.os }}-emsdk-${{ steps.emsdk-version.outputs.version }}
-        restore-keys: |
-          ${{ runner.os }}-emsdk-
 
     - name: Install Emscripten
       run: |
