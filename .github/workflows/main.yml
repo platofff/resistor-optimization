@@ -56,3 +56,4 @@ jobs:
       with:
         branch: gh-pages
         folder: .output/public
+        token: ${{ secrets.GH_PAT }}
