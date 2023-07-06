@@ -13,6 +13,7 @@ class ResistanceOptimizer {
       const std::vector<const std::shared_ptr<Resistor>>::iterator begin,
       const std::vector<const std::shared_ptr<Resistor>>::iterator end,
       const std::shared_ptr<ElementContainer> base) const;
+  static constexpr double ACCURACY = 0.0001; // TODO non-constant
 
  public:
   explicit ResistanceOptimizer(std::vector<double> &resistances);

@@ -29,8 +29,10 @@ class ElementContainer : public Element {
 
   std::generator<std::shared_ptr<ElementContainer>> allNestedContainers();
 
+  std::uint_fast32_t getNumberOfResistors() const;
+
   std::shared_ptr<ElementContainer> addCoW(
-      std::shared_ptr<ElementContainer> container) const;
+      std::shared_ptr<Element> el) const;
 
   explicit ElementContainer() = default;
 };

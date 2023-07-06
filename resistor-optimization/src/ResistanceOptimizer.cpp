@@ -20,6 +20,8 @@ ResistanceOptimizer::generateCombinations(
     const std::shared_ptr<ElementContainer> base) const {
   assert(std::distance(begin, end) != 0);
   
+  const auto c = std::ranges::subrange(begin, end);
+
   if (base == nullptr) {
     const auto base1 = std::make_shared<SeriesContainer>();
     for (const auto& res : generateCombinations(
@@ -34,30 +36,38 @@ ResistanceOptimizer::generateCombinations(
     co_return;
   }
 
-  const auto c = std::ranges::subrange(begin, end);
-
   if (c.size() == 1) {
     for (const auto& container : base->allNestedContainers()) {
-      const auto new_container = std::make_shared<SeriesContainer>();
-      new_container->add(c[0]);
-      co_yield container->addCoW(new_container);
+      co_yield container->addCoW(c[0]);
     }
     co_return;
   }
 
   for (const auto& container : base->allNestedContainers()) {
-    const auto scontainer = std::make_shared<SeriesContainer>();
-    scontainer->add(c[0]);
     for (const auto& res : generateCombinations(
-             std::next(begin), end, container->addCoW(scontainer))) {
-      co_yield res;
+             std::next(begin), end, container->addCoW(c[0]))) {
+        co_yield res;
     }
 
-    const auto pcontainer = std::make_shared<ParallelContainer>();
-    pcontainer->add(c[0]);
-    for (const auto& res : generateCombinations(
-             std::next(begin), end, container->addCoW(pcontainer))) {
-      co_yield res;
+    auto scont = std::dynamic_pointer_cast<SeriesContainer>(container);
+
+    if (scont) {
+      const auto new_pcont = std::make_shared<ParallelContainer>();
+      new_pcont->add(c[0]);
+
+      for (const auto& res : generateCombinations(
+             std::next(begin), end, container->addCoW(new_pcont))) {
+        co_yield res;
+      }
+    } else {
+      auto pcont = std::dynamic_pointer_cast<ParallelContainer>(container);
+
+      const auto new_scont = std::make_shared<SeriesContainer>();
+      new_scont->add(c[0]);
+      for (const auto& res : generateCombinations(
+             std::next(begin), end, container->addCoW(new_scont))) {
+        co_yield res;
+      }
     }
   }
 }
@@ -68,6 +78,7 @@ std::pair<std::string, double> ResistanceOptimizer::optimize(
   std::ostringstream ss;
 
   double min_r_offset = std::numeric_limits<double>::infinity();
+  std::uint_fast32_t res_n = 0;
   double res_resistance = 0.0;
   std::shared_ptr<ElementContainer> res;
 
@@ -78,9 +89,11 @@ std::pair<std::string, double> ResistanceOptimizer::optimize(
       const double resistance = combination->getResistance();
       const double r_offset =
           std::abs(target_resistance - resistance);
+      const auto n = combination->getNumberOfResistors();
 
-      if (r_offset < min_r_offset) {
+      if (r_offset < min_r_offset || (n < res_n && r_offset <= ACCURACY)) {
         min_r_offset = r_offset;
+        res_n = n;
         res_resistance = resistance;
         res = combination;
       }

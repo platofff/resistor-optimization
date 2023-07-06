@@ -12,7 +12,7 @@ void ElementContainer::add(std::shared_ptr<Element> el) {
 }
 
 std::shared_ptr<ElementContainer> ElementContainer::addCoW(
-    std::shared_ptr<ElementContainer> container) const {
+    std::shared_ptr<Element> el) const {
   std::shared_ptr<ElementContainer> node = this->clone();
   std::shared_ptr<ElementContainer> self_clone = node;
 
@@ -24,7 +24,7 @@ std::shared_ptr<ElementContainer> ElementContainer::addCoW(
     node = parent_clone;
   }
 
-  self_clone->add(container);
+  self_clone->add(el);
 
   return node;
 }
@@ -45,6 +45,19 @@ ElementContainer::allNestedContainers() {
     }
   }
   co_return;
+}
+
+std::uint_fast32_t ElementContainer::getNumberOfResistors() const {
+  std::uint_fast32_t n = 0;
+  for (const auto& el : elements) {
+    auto sptr = std::dynamic_pointer_cast<ElementContainer>(el);
+    if (!sptr) {
+      n++;
+      continue;
+    }
+    n += sptr->getNumberOfResistors();
+  }
+  return n;
 }
 
 std::shared_ptr<ElementContainer> ElementContainer::clone() const {
