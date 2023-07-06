@@ -14,5 +14,5 @@ add_executable(resistor-optimization
     "src/ResistanceOptimizer.cpp")
 
 if (EMSCRIPTEN)
-    set_target_properties(resistor-optimization PROPERTIES LINK_FLAGS "--bind --post-js /home/arkad/git/resistor-optimization/resistor-optimization/worker.js")
+    set_target_properties(resistor-optimization PROPERTIES LINK_FLAGS "--bind --post-js ${CMAKE_CURRENT_SOURCE_DIR}/worker.js")
 endif()

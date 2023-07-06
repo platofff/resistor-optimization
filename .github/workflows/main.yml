@@ -36,7 +36,7 @@ jobs:
 
     - name: Install Emscripten
       run: |
-        git clone https://github.com/emscripten-core/emsdk.git
+        git clone --depth=1 https://github.com/emscripten-core/emsdk.git
         cd emsdk
         ./emsdk install latest
         ./emsdk activate latest
