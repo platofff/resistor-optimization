@@ -23,10 +23,12 @@ ResistanceOptimizer::generateCombinations(
   const auto c = std::ranges::subrange(begin, end);
 
   if (base == nullptr) {
-    for (const auto& resistor : c) {
-      const auto base = std::make_shared<SeriesContainer>();
-      base->add(resistor);
-      co_yield base;
+    if (c.size() > 1) {
+      for (const auto& resistor : c) {
+        const auto base = std::make_shared<SeriesContainer>();
+        base->add(resistor);
+        co_yield base;
+      }
     }
 
     const auto base1 = std::make_shared<SeriesContainer>();
