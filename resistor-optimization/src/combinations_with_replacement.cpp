@@ -1,10 +1,10 @@
 #include "combinations_with_replacement.hpp"
 
-std::generator<const std::vector<size_t>&> gen_indicies(const size_t n,
+std::generator<const std::vector<size_t>&> gen_indices(const size_t n,
                                                         const size_t r) {
-  std::vector<size_t> indicies(r);
-  co_yield indicies;
-  const auto rev = indicies | std::views::reverse;
+  std::vector<size_t> indices(r);
+  co_yield indices;
+  const auto rev = indices | std::views::reverse;
 
   while (true) {
     const auto found = std::ranges::find_if(
@@ -19,6 +19,6 @@ std::generator<const std::vector<size_t>&> gen_indicies(const size_t n,
       el = fill;
     }
 
-    co_yield indicies;
+    co_yield indices;
   }
 }
